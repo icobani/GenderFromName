@@ -1,15 +1,17 @@
-select *
+select *,
+       CASE
+           WHEN t."probability_female" > t."probability_male" THEN 'female'
+           else 'male'
+           END "gender"
 from (
          select first_name,
                 cast(count(*) filter (where gender = 'male' or gender = 'erkek') as float) /
-                cast(count(*) as float) "Probability_Male",
+                cast(count(*) as float) "probability_male",
                 cast(count(*) filter (where gender = 'female' or gender = 'kadın') as float) /
-                cast(count(*) as float) "Probability_FeMale",
-                count(*)                "Total"
+                cast(count(*) as float) "probability_female",
+                count(*)                "total_count"
          from profiles
-         where gender <> '' and first_name <> ''
+         where gender <> ''
+           and first_name <> ''
          group by first_name
      ) t
-where t."Probability_FeMale" > 0
-  and t."Probability_FeMale" < 1
-and "Total"> 10
