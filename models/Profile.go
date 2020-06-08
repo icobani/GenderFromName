@@ -9,9 +9,6 @@ package models
 
 import "time"
 
-type Gender struct {
-	Gender string
-}
 type Profile struct {
 	ID                               uint64    `gorm:"primary_key" json:"id,omitempty"`
 	HotelID                          uint64    `gorm:"primary_key" json:"hotel_id,omitempty"`

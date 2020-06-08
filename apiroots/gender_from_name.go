@@ -13,5 +13,5 @@ import (
 )
 
 func GenderFromNameApi(api *gin.RouterGroup) {
-	api.GET("/genderfromname", apicontroller.GET_GenderFromName)
+	api.GET("/genderfromname/:name", apicontroller.GET_GenderFromName)
 }
