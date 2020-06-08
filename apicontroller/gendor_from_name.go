@@ -22,11 +22,11 @@ func GET_GenderFromName(c *gin.Context) {
 
 	AppConfig.DB.Where("first_name =? AND (gender = ? OR gender = ?)",
 		name, "male", "erkek").
-		Find(&profile).Count(gender.MaleCount)
+		Find(&profile).Count(&gender.MaleCount)
 
 	AppConfig.DB.Where("first_name =? AND (gender = ? OR gender = ?)",
 		name, "female", "kadın").
-		Find(&profile).Count(gender.FemaleCount)
+		Find(&profile).Count(&gender.FemaleCount)
 
 	gender.TotalCount = gender.FemaleCount + gender.MaleCount
 	if gender.TotalCount > 0 {
@@ -38,7 +38,6 @@ func GET_GenderFromName(c *gin.Context) {
 			gender.Gender = "Male"
 			gender.Probability = float64(gender.MaleCount / gender.TotalCount)
 		}
-
 	} else {
 		gender.Gender = ""
 		gender.Probability = 0
