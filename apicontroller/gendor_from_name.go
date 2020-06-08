@@ -11,6 +11,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/icobani/GenderFromName/AppConfig"
 	"github.com/icobani/GenderFromName/models"
+	"log"
 	"net/http"
 )
 
@@ -18,7 +19,7 @@ func GET_GenderFromName(c *gin.Context) {
 	var name = c.Params.ByName("name")
 	//AppConfig.DB.
 	gender := models.Gender{}
-	profile := models.Profile{}
+	profile := []models.Profile{}
 
 	AppConfig.DB.Where("first_name =? AND (gender = ? OR gender = ?)",
 		name, "male", "erkek").
@@ -33,10 +34,11 @@ func GET_GenderFromName(c *gin.Context) {
 
 		if gender.FemaleCount > gender.MaleCount {
 			gender.Gender = "Female"
-			gender.Probability = float64(gender.FemaleCount / gender.TotalCount)
+			gender.Probability = float64(gender.FemaleCount) / float64(gender.TotalCount)
+			log.Println(gender.FemaleCount, gender.MaleCount, gender.TotalCount, gender.Probability)
 		} else {
 			gender.Gender = "Male"
-			gender.Probability = float64(gender.MaleCount / gender.TotalCount)
+			gender.Probability = float64(gender.MaleCount) / float64(gender.TotalCount)
 		}
 	} else {
 		gender.Gender = ""
